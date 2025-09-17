@@ -18,7 +18,7 @@ const logger = createLogger({
     transports: [
         new transports.Console(),
         new transports.File({filename: "./log/all-log.log"}),
-        new transports.MongoDB({db: "mongodb+srv://asaddevo211_db_user:w2q2OqXeBedta0nB@cluster0.4tdv3nu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"})
+        new transports.MongoDB({db: process.env.MONGO_URL})
     ]
 })
    

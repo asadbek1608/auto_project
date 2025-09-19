@@ -9,6 +9,8 @@ const authRouter = require("./router/auth.routes")
 const cookieParser = require("cookie-parser")
 const logger = require("./utils/logger")
 const profileRouter = require("./router/profile.routes")
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -24,7 +26,11 @@ connectDB()
 // logger.info("Info logger")
 // logger.debug("Debug logger")
 
-// router
+const swaggerDocument = YAML.load("./docs/swagger.yml")
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// router 
 app.use(brandRouter)
 app.use(carRouter)
 app.use(authRouter)

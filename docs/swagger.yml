@@ -1,0 +1,135 @@
+openapi: 3.0.0
+info:
+  title: DevAuto
+  description: DevAuto loyihasi uchun swagger
+  version: 1.0.0
+servers:
+  - url: http://localhost:4001
+
+paths:
+  /get_all_brands:
+    get:
+      summary: Get all brands
+      tags: [Brand]
+      responses:
+        '200':
+          description: List of all brands
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Brand'
+
+  /get_one_brand/{id}:
+    get:
+      summary: Get one brand by ID
+      tags: [Brand]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Brand ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Brand found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Brand'
+        '404':
+          description: Brand not found
+
+  /add_brand:
+    post:
+      summary: Add a new brand
+      tags: [Brand]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBrandInput'
+      responses:
+        '201':
+          description: Brand added successfully
+
+  /update_brand/{id}:
+    put:
+      summary: Update a brand
+      tags: [Brand]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Brand ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBrandInput'
+      responses:
+        '200':
+          description: Brand updated successfully
+        '404':
+          description: Brand not found
+
+  /delete_brand/{id}:
+    delete:
+      summary: Delete a brand
+      tags: [Brand]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Brand ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Brand deleted successfully
+        '404':
+          description: Brand not found
+
+components:
+  schemas:
+    Brand:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        image:
+          type: string
+        addedBy:
+          type: string
+    CreateBrandInput:
+      type: object
+      required:
+        - name
+        - image
+      properties:
+        name:
+          type: string
+          example: "Nike"
+        image:
+          type: string
+          example: "https://example.com/nike.png"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
